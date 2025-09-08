@@ -1,41 +1,6 @@
 import React from 'react'
-import {useEffect, useState, useRef} from 'react'
-
-
-function useWindowWidth(): number {
-
-  const [width, setWidth] = useState(window.innerWidth);
-  useEffect(() => {
-
-    const handleResize = () => setWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-
-  }, [])
-  return width;
-
-}
-
-function useInView(threshold: number = 0.2) {
-
-  const inViewRef = useRef<HTMLDivElement | null>(null);
-  const [inView, setInView] = useState(false);
-
-  useEffect( () => {
-
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {setInView(true); console.log("hi");}
-    }, {threshold});
-
-    if (inViewRef.current) observer.observe(inViewRef.current);
-    return () => {if (inViewRef.current) observer.unobserve(inViewRef.current);}
-
-  }, [threshold]);
-
-  return {inViewRef, inView};
-
-}
-
+import useInView from '../scripts/useInView';
+import useWindowWidth from '../scripts/useWindowWidth';
 
 export default function Project(props: {
   children: React.ReactNode,
@@ -58,8 +23,8 @@ export default function Project(props: {
   // sections
   const titleSection = (
       <div className="project-title">
-        <h2 className="oswald">{title}</h2>
-        <img src={imgInfo.image} alt={imgInfo.alt}/>
+        <h2 className="funnel-sans" style={{maxWidth: "80%", fontSize: (vertView?"6":"3")+"vw", lineHeight: (vertView?"5":"3")+"vw"}}>{title}</h2>
+        <img src={imgInfo.image} alt={imgInfo.alt} style={{objectFit: "cover", aspectRatio: 1/1}}/>
       </div>
       );
   const descriptionSection = (<div className="project-description">

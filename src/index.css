@@ -1,7 +1,7 @@
 
 
 :root {
-  font-family: Roboto, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -31,15 +31,15 @@ body {
 }
 
 h1 {
-  font-family: "Google Sans Code", "Oswald", system-ui;
-  line-height: 3rem;
+  font-family: system-ui;
+  line-height: 8vw;
   font-size: 3rem;
   margin-inline: 30px;
   padding: 20px;
 }
 
 h2 {
-  font-size: 2em;
+  font-size: 2rem;
   margin: 0;
 }
 
@@ -61,6 +61,13 @@ h2 {
   font-family: "Google Sans Code", monospace;
 }
 
+.merriweather {
+  font-family: "Merriweather", sans-serif;
+}
+
+.funnel-sans {
+  font-family: "Funnel Sans", sans-serif;
+}
 
 
 @media (prefers-color-scheme: light) {
@@ -68,8 +75,8 @@ h2 {
     --bg1: #ffffff;
     --bg2: #b0c7e2;
 
-    --color1: #6aaffd;
-    --color2: #0e10a3;
+    --color1: #5389ff;
+    --color2: #ffa34d;
 
     --contrastColor: 213547;
   }
@@ -77,10 +84,10 @@ h2 {
 @media (prefers-color-scheme: dark) {
   :root {
     --bg1: #100f14;
-    --bg2: #2c293b;
+    --bg2: #25232e;
 
     --color1: #ffde24;
-    --color2: #ff8a2a;
+    --color2: #8e82ff;
 
     --contrastColor: rgba(255, 255, 255, 0.87);
   }
