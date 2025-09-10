@@ -23,11 +23,17 @@ export default function Project(props: {
   // sections
   const titleSection = (
       <div className="project-title">
-        <h2 className="funnel-sans" style={{maxWidth: "80%", fontSize: (vertView?"6":"3")+"vw", lineHeight: (vertView?"5":"3")+"vw"}}>{title}</h2>
         <img src={imgInfo.image} alt={imgInfo.alt} style={{objectFit: "cover", aspectRatio: 1/1}}/>
       </div>
       );
   const descriptionSection = (<div className="project-description">
+        <h2 className="funnel-sans" style={{
+          textAlign: "left",
+          maxWidth: "80%",
+          marginBlock: "20px",
+          fontSize: (vertView?"6":"4")+"vw",
+          lineHeight: (vertView?"5":"3.5")+"vw",
+          color: "var(--color1)"}}>{title}</h2>
         {children}
       </div>)
 

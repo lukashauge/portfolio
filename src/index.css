@@ -25,15 +25,15 @@
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  place-items: top;
   min-width: 320px;
   min-height: 100vh;
 }
 
 h1 {
-  font-family: system-ui;
-  line-height: 8vw;
-  font-size: 3rem;
+  font-family: "Merriweather";
+  line-height: 4rem;
+  font-size: 4rem;
   margin-inline: 30px;
   padding: 20px;
 }
@@ -41,6 +41,10 @@ h1 {
 h2 {
   font-size: 2rem;
   margin: 0;
+}
+
+p {
+  font-family: "Cascadia Code", sans-serif;
 }
 
 
@@ -73,12 +77,12 @@ h2 {
 @media (prefers-color-scheme: light) {
   :root {
     --bg1: #ffffff;
-    --bg2: #b0c7e2;
+    --bg2: #c0cedd;
 
-    --color1: #5389ff;
+    --color1: #4a65db;
     --color2: #ffa34d;
 
-    --contrastColor: 213547;
+    --contrastColor: #1a3852;
   }
 }
 @media (prefers-color-scheme: dark) {
@@ -87,8 +91,8 @@ h2 {
     --bg2: #25232e;
 
     --color1: #ffde24;
-    --color2: #8e82ff;
+    --color2: #9872ff;
 
-    --contrastColor: rgba(255, 255, 255, 0.87);
+    --contrastColor: white;
   }
 }

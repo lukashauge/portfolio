@@ -1,17 +1,20 @@
-import React from 'react'
-import useWindowWidth from '../scripts/useWindowWidth';
+import { isVertView } from '../scripts/useWindowWidth';
+import useParallaxRef from '../scripts/useParallaxRef';
 
-export default function FullWidthImg(props: {children?: React.ReactNode, imgInfo: {image: string, alt: string}}) {
+export default function FullWidthImg(props: {
+  children?: React.ReactNode, 
+  imgInfo: {image: string, alt: string}, 
+  parallaxParams?: {anchor: number, speed: number}
+}) {
 
-    const {children, imgInfo} = props;
+  const {children, imgInfo, parallaxParams = null} = props;
 
-    const windowWidth = useWindowWidth();
-    const reformatThreshold = 950;
-    const vertView: boolean = windowWidth<reformatThreshold;
+  const vertView: boolean = isVertView();
+  const parallaxRef = parallaxParams?useParallaxRef(parallaxParams):null;
 
   return (
     <div className="banner" style={{height: vertView?"100vh":"50vh"}}>
-        <img src={imgInfo.image} alt={imgInfo.alt}/>
+        <img ref={parallaxRef} src={imgInfo.image} alt={imgInfo.alt}/>
         {children}
     </div>
   )

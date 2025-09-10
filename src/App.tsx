@@ -1,27 +1,58 @@
 import './App.css'
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 
 import ProjectList from './Components/ProjectList.tsx'
 import Project from './Components/Project.tsx'
 import SiteHeader from './Components/SiteHeader.tsx'
 import Navbar from './Components/Navbar.tsx'
+import AboutMe from './Components/AboutMe.tsx'
 
 import defaultImage from './assets/default-image.png'
-import gif from "./assets/test-gif.gif"
+
+// ICONS
+import { FaItchIo, FaCode } from "react-icons/fa6";
+import { IoGameController } from 'react-icons/io5'
 
 function App() {
+  return (
+    <>
+      <BrowserRouter>
 
-  const defaultInfoGif = {image: gif, alt: "a placeholder image"};
+      <Navbar>
+        <Link className="google-sans-code" to="/" onClick={() => window.scroll({top:0, left:0, behavior: "smooth"})}>HOME</Link>
+        <Link className="google-sans-code" to="/contact" onClick={() => window.scroll({top:0, left:0, behavior: "smooth"})}>CONTACT</Link>
+      </Navbar>
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+
+      </BrowserRouter>
+    </>
+  )
+}
+
+function Home() {
+
   const defaultInfoImg = {image: defaultImage, alt: "a placeholder image"};
 
   return (
     <>
-      <Navbar/>
-      <SiteHeader imgInfo={defaultInfoGif}/>
-      <h1 className="funnel-sans" style={{fontSize: "6vw", lineHeight: "6vw"}}>Here are some<br/> projects I've created!</h1>
+      <SiteHeader imgInfo={defaultInfoImg}/>
+      <AboutMe>
+        <h2 style={{textAlign: "left"}}>Children Test</h2>
+        <p style={{textAlign:"justify"}}>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical
+              Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at
+              Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a
+              Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the
+              undoubtable source.</p>
+      </AboutMe>
+      <h1>Here are some<br/> projects I've created!</h1>
       <ProjectList>
         <Project title="The Brilliant Detective Milo" imgInfo={defaultInfoImg} flipText={false}>
-            <h2 className="merriweather" style={{textAlign: "left"}}>Executive Creative & Technical Director</h2>
-            <p className="cascadia-code">
+            <h2 className="merriweather" style={{textAlign: "left", lineHeight: "2rem"}}>Executive Creative & Technical Director</h2>
+            <p>
               Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical
               Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at
               Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a
@@ -34,13 +65,22 @@ function App() {
               1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original
               form, accompanied by English versions from the 1914 translation by H. Rackham.
             </p>
-            <button className="fancy-button google-sans-code" style={{ width: "80%", alignSelf: "center"}} onClick={() => open("https://store.steampowered.com/app/3151680/")}>
-              CHECK IT OUT
+            <button className="fancy-button google-sans-code" style={{ 
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "10px", 
+              width: "80%",
+              height: "100%",
+              alignSelf: "center"}}
+              onClick={() => open("https://store.steampowered.com/app/3151680/")}>
+                <IoGameController style={{fontSize: "20px"}}/>
+                <p>CHECK IT OUT</p>
             </button>
           </Project>
         <Project title="Vision Board" imgInfo={defaultInfoImg} flipText={true}>
-          <h2 className="merriweather" style={{textAlign: "left"}}>Software Developer & Systems Engineer</h2>
-            <p className="cascadia-code">
+          <h2 className="merriweather" style={{textAlign: "left", lineHeight: "2rem"}}>Software Developer & Systems Engineer</h2>
+            <p>
               Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical
               Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at
               Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a
@@ -53,13 +93,46 @@ function App() {
               1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original
               form, accompanied by English versions from the 1914 translation by H. Rackham.
             </p>
-            <button className="fancy-button google-sans-code" style={{ width: "80%", alignSelf: "center"}} onClick={() => open("https://github.com/r-adaR/vision-board/")}>
-              SEE THE CODE ON GITHUB
-            </button>
+            <span style={{display: "flex", gap: "20px"}}>
+              <button className="fancy-button google-sans-code" style={{ 
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "10px", 
+                width: "80%",
+                height: "100%",
+                alignSelf: "center"}}
+                onClick={() => open("https://github.com/r-adaR/vision-board")}>
+                  <FaCode style={{fontSize: "20px"}}/>
+                  <p>SEE THE CODE ON GITHUB</p>
+              </button>
+              <button className="fancy-button google-sans-code" style={{ 
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "10px", 
+                width: "80%",
+                height: "100%",
+                alignSelf: "center"}}
+                onClick={() => open("https://lukashauge.itch.io/tictactoe-xtremeo")}>
+                  <FaItchIo style={{fontSize: "20px"}}/>
+                  <p>DOWNLOAD ON ITCH.IO</p>
+              </button>
+            </span>
         </Project>
       </ProjectList>
     </>
   )
+}
+
+function Contact() {
+
+  return (
+    <>
+      <div style={{height: "200vh"}}>contact me</div>
+    </>
+  )
+
 }
 
 export default App

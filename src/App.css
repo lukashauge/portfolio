@@ -1,7 +1,7 @@
 #root {
   margin: 0 0;
   text-align: center;
-  max-width: 95vw;
+  width: 95vw;
 }
 
 /* graphics */
@@ -14,7 +14,7 @@
     flex-direction: column;
     justify-content: center;
     overflow: hidden;
-    
+
     &:after {
       content: "";
       position: absolute;
@@ -27,13 +27,24 @@
 
     img {
       position: absolute;
-      width: 100%;
+      width: auto;
       height: auto;
+
+      min-width: 100%;
+      min-height: 100%;
       z-index: -1;
       opacity: 0.3;
     }
 }
 
+@keyframes rotate {
+  to { --angle: 360deg; }
+}
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
 
 /* divs */
 
@@ -46,7 +57,7 @@
   background-color: var(--bg2);
   border-radius: 20px;
   padding: 2rem;
-  margin: 5%;
+  margin: 8%;
   gap: 2rem;
   display: flex;
   flex-direction: row;
@@ -95,20 +106,111 @@
   align-items: center;
   display: flex;
   flex-direction: row;
-  padding: 10px;
   background: var(--bg1);
   width: 100%;
 
   position: sticky;
   top: 0;
   z-index:10;
+  
+  strong {
+    padding: 10px;
+    font-size: 20px;
+  }
 
-  span {
-    display: inline;
-    gap: 100px;
+  a {
+    background: var(--bg1);
+    color: var(--color1);
+    padding: 0.8em 1.5em;
+    border-radius: 1em;
+    margin: 15px;
+    font-size: 1.1rem;
+
+    position: relative;
+
+    transition: all 0.2s var(--easeOutQuint);
+
+    &:after {
+      content: "";
+      position: absolute;
+      inset: -5px;
+      box-shadow: rgba(0, 0, 0, 0.534) 0px 4px 5px 0;
+
+      background: linear-gradient(to bottom right, var(--color1), var(--color2));
+      border-radius: 20px;
+
+      z-index: -1;
+
+    }
+
+    &:hover {
+      color: white;
+      background: transparent;
+    }
+
+    &:active {
+      top: 2px;
+      color: white;
+      &:after {
+        box-shadow: rgba(0, 0, 0, 0.534) 0px 2px 5px 0;
+      }
+    }
+
   }
 }
 
+.personal-attribute {
+  display: flex; 
+  flex-direction: row; 
+  justify-content: space-evenly; 
+  align-self: center; 
+  position: relative;
+  overflow: show;
+
+  padding: 20px; 
+  margin: 20px;
+  transform: translateY(0px);
+  border-radius: 20px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  transition: all 0.4s var(--easeOutQuint);
+
+  &:hover {
+    transform: translateY(-5px);
+    color: white;
+
+    &:after {
+      opacity: 0;
+    }
+  }
+
+  &:after {
+    content: "";
+    position: absolute;
+    background: var(--bg2);
+    inset: 0;
+    z-index: -1;
+    border-radius: 18px;
+    
+    mix-blend-mode: normal;
+    opacity: 1;
+    transition: opacity 0.4s var(--easeOutQuint);
+  }
+
+  &:before {
+    content: "";
+    position: absolute;
+    background: rgb(80, 80, 80);
+    inset: 0;
+    z-index: -1;
+    border-radius: 20px;
+    
+    mix-blend-mode: multiply;
+  }
+
+}
 
 /* interactable elements */
 
@@ -120,6 +222,7 @@
   font-weight: 500;
   top: 0px;
   box-shadow: black 0px 4px 5px 0;
+  cursor: pointer;
 
   position: relative;
   overflow: hidden;
