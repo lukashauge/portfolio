@@ -1,0 +1,55 @@
+.minefield-container {
+
+    background-color: var(--bg2);
+
+    align-self:center;
+    justify-self:center;
+
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    position: relative;
+
+    margin: 30px;
+    width: min(75%, 65vmin);
+    height: auto;
+    padding: 20px;
+    aspect-ratio: 1/1;
+
+    border-radius: 40px;
+
+    transition: border 1s var(--easeOutQuint);
+
+}
+
+.minefield-tile {
+    width: auto;
+    height: auto;
+    border: none;
+    border-radius: 20%;
+
+    align-content: center;
+    justify-content: center;
+
+    border: 0px solid;
+}
+
+.minefield-number {
+    margin: 0px;
+    font-size: 1rem;
+}
+
+.tile-revealed {
+    background-color: var(--bg1);
+}
+
+.tile-hidden {
+    background-color: rgba(93, 89, 138, 0.459);
+}
+
+.hover-changes-color {
+    transition: background-color 0.3s var(--easeOutQuint);
+    &:hover {
+        background-color: white !important;
+    }
+}

@@ -6,6 +6,7 @@ import Project from './Components/Project.tsx'
 import SiteHeader from './Components/SiteHeader.tsx'
 import Navbar from './Components/Navbar.tsx'
 import AboutMe from './Components/AboutMe.tsx'
+import MinesweeperMain from './Components/minesweeper/MinesweeperMain.tsx'
 
 import defaultImage from './assets/default-image.png'
 
@@ -19,8 +20,8 @@ function App() {
       <BrowserRouter>
 
       <Navbar>
-        <Link className="google-sans-code" to="/" onClick={() => window.scroll({top:0, left:0, behavior: "smooth"})}>HOME</Link>
-        <Link className="google-sans-code" to="/contact" onClick={() => window.scroll({top:0, left:0, behavior: "smooth"})}>CONTACT</Link>
+        <Link className="google-sans-code gradient-button" to="/" onClick={() => window.scroll({top:0, left:0, behavior: "smooth"})}>HOME</Link>
+        <Link className="google-sans-code gradient-button" to="/contact" onClick={() => window.scroll({top:0, left:0, behavior: "smooth"})}>CONTACT</Link>
       </Navbar>
 
       <Routes>
@@ -121,6 +122,12 @@ function Home() {
             </span>
         </Project>
       </ProjectList>
+
+      <h1 style={{marginBlock: "20px", marginInline:"0px", paddingBottom:"0px", maxWidth: "50%", justifySelf: "center", paddingBlock:"10px"}}>You've made it to the end!</h1>
+      <p style={{fontSize:"1.4rem", maxWidth: "50%", justifySelf: "center", textAlign: "justify"}}>
+        Feel free to play this <strong style={{color: "var(--color1)"}}>minesweeper</strong> I made. I'll be working on my next project in the meantime, I promise it'll be worth the wait! :)
+      </p>
+      <MinesweeperMain/>
     </>
   )
 }

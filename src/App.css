@@ -117,46 +117,6 @@
     padding: 10px;
     font-size: 20px;
   }
-
-  a {
-    background: var(--bg1);
-    color: var(--color1);
-    padding: 0.8em 1.5em;
-    border-radius: 1em;
-    margin: 15px;
-    font-size: 1.1rem;
-
-    position: relative;
-
-    transition: all 0.2s var(--easeOutQuint);
-
-    &:after {
-      content: "";
-      position: absolute;
-      inset: -5px;
-      box-shadow: rgba(0, 0, 0, 0.534) 0px 4px 5px 0;
-
-      background: linear-gradient(to bottom right, var(--color1), var(--color2));
-      border-radius: 20px;
-
-      z-index: -1;
-
-    }
-
-    &:hover {
-      color: white;
-      background: transparent;
-    }
-
-    &:active {
-      top: 2px;
-      color: white;
-      &:after {
-        box-shadow: rgba(0, 0, 0, 0.534) 0px 2px 5px 0;
-      }
-    }
-
-  }
 }
 
 .personal-attribute {
@@ -212,6 +172,13 @@
 
 }
 
+.flex-center {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 20px;
+}
+
 /* interactable elements */
 
 .fancy-button {
@@ -263,6 +230,50 @@
     border-color: var(--color2);
     &:before {
       background-color: var(--color2);
+    }
+  }
+
+}
+
+
+.gradient-button {
+  background: var(--bg1);
+  color: var(--color1);
+  cursor: pointer;
+
+  padding: 0.8em 1.5em;
+  margin: 15px;
+  position: relative;
+
+  border: none;
+  border-radius: 1em;
+  font-size: 1.1rem;
+  
+  transition: all 0.2s var(--easeOutQuint);
+
+  &:after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    box-shadow: rgba(0, 0, 0, 0.534) 0px 4px 5px 0;
+
+    background: linear-gradient(to bottom right, var(--color1), var(--color2));
+    border-radius: 20px;
+
+    z-index: -1;
+
+  }
+
+  &:hover {
+    color: white;
+    background: transparent;
+  }
+
+  &:active {
+    top: 2px;
+    color: white;
+    &:after {
+      box-shadow: rgba(0, 0, 0, 0.534) 0px 2px 5px 0;
     }
   }
 
