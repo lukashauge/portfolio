@@ -1,11 +1,20 @@
-import { useReducer, useState } from 'react';
+import React, { useReducer, useState } from 'react';
 import Tile from './Tile';
+import Stopwatch from './Stopwatch';
 import { isVertView } from '../../scripts/useWindowWidth';
 
 import './Minesweeper.css';
 
 import { PiShovelFill, PiMouseLeftClick, PiMouseRightClick } from 'react-icons/pi'
 import { FaFlag } from 'react-icons/fa6';
+
+function reverseLerp(value: number, lower: number, upper: number): number {
+    // clamp
+    if (value <= lower) return 0;
+    if (value >= upper) return 1;
+    // reverse lerp
+    return (value - lower) / (upper - lower);
+}
 
 function newTile(): 
 { isMine: boolean, isRevealed: boolean, isFlagged: boolean, adjacentMines: number }
@@ -17,7 +26,6 @@ function newTile():
     adjacentMines: 0
     }
 }
-
 
 function newGameState(size: number, mineCount: number, markSafeStartTile?: {x:number, y:number}):
  { isMine: boolean, isRevealed: boolean, isFlagged: boolean, adjacentMines: number }[][] 
@@ -34,13 +42,27 @@ function newGameState(size: number, mineCount: number, markSafeStartTile?: {x:nu
     if (mineCount > size*size-1) throw `GameState needs at least one safe tile!`;
     if (mineCount >0) {
         const numMines = size*size;
-        const indexes = [...Array(numMines).keys()];
+        const safeZone = new Set<number>();
 
-        if (markSafeStartTile) indexes.splice(markSafeStartTile.y*size+markSafeStartTile.x, 1);
-        
+        if (markSafeStartTile) {
+            // no bombs in 3x3 square around the safe tile
+            for (let dx = 1; dx >= -1; dx--) 
+                for (let dy = 1; dy >=-1; dy--) {
+                    const nx = markSafeStartTile.x + dx;
+                    const ny = markSafeStartTile.y + dy;
+                    if (nx >= 0 && nx < size && ny >= 0 && ny < size) {
+                        safeZone.add(ny*size+nx);
+                    }
+                }
+        }
+
+        const indexes = [...Array(numMines).keys()].filter((i) => !safeZone.has(i));
         for (let i=0; i<mineCount; i++) {
+
             // grab random serialized index of the board we haven't touched yet
             // then convert to coordinates, then set as mine
+
+            if (indexes.length === 0) break; // no more available spots means we break
             const coord = indexes.splice(Math.floor(Math.random() * indexes.length), 1)[0];
             const x = coord%size;
             const y = Math.floor(coord/size);
@@ -55,6 +77,7 @@ function newGameState(size: number, mineCount: number, markSafeStartTile?: {x:nu
                         tiles[ny][nx].adjacentMines++;
                     }
                 }
+
         }
 
         // record number of adjacent mines in each tile
@@ -86,10 +109,10 @@ function sizeToMines(size: number, difficulty: string): number {
         case 'Easy': {mines *= 0.11; break;}
         case 'Medium': {mines *= 0.16; break;}
         case 'Hard': {mines *= 0.21; break;}
+        case 'Impossible': {mines *= 0.4; break;}
     }
     return Math.floor(mines);
 }
-
 
 export class GameState {
     tiles: { isMine: boolean, isRevealed: boolean, isFlagged: boolean, adjacentMines: number }[][];
@@ -157,7 +180,7 @@ export class GameState {
                 if (dx === 0 && dy === 0) continue;
                 const ny = y + dy;
                 const nx = x + dx;
-                if (!visitedSet.has(`${nx},${ny}`) && nx >= 0 && nx < this.size && ny >= 0 && ny < this.size) {
+                if (!visitedSet.has(`${nx},${ny}`) && nx >= 0 && nx < this.size && ny >= 0 && ny < this.size && !this.tiles[ny][nx].isFlagged) {
                     this.tiles[ny][nx].isRevealed = true;
                     this.tiles[ny][nx].isFlagged = false;
                     visitedSet.add(`${nx},${ny}`);
@@ -237,67 +260,17 @@ function gameStateReducer(state: GameState, action: any) {
     return newState;
 }
 
-/*
-class GameState {
-
-    arr: { isMine: boolean, isRevealed: boolean, adjacentMines: number }[][];
-    size: number;
-
-    constructor(size: number, mines: number, markSafeStartTile?: {x:number, y:number}) {
-        this.size = size;
-        this.arr = Array.from({length: size}, () =>
-            Array.from({length: size}, () => newTile())
-        );
-
-        const numMines = size*size;
-        const indexes = [...Array(numMines).keys()];
-
-        if (markSafeStartTile) indexes.splice(markSafeStartTile.y*size+markSafeStartTile.x, 1);
-        
-        for (let i=0; i<mines; i++) {
-            // grab random serialized index of the board we haven't touched yet
-            // then convert to coordinates, then set as mine
-            const coord = indexes.splice(Math.floor(Math.random() * indexes.length), 1)[0];
-            const x = coord%size;
-            const y = Math.floor(coord/size);
-            this.arr[y][x].isMine = true;
-        }
-
-        // find adjacent mines for all tiles
-        this.arr.forEach((vector, y) => {
-            vector.forEach((tile, x) => tile.adjacentMines = this.getAdjacentMines(x, y))
-        });
-    }
-
-    public getAdjacentMines(x: number, y: number): number {
-        let count = 0;
-        
-        for(let dx=-1; dx<=1; dx++) {
-            for(let dy=-1; dy<=1; dy++) {
-                const newX = x+dx;
-                const newY = y+dy;
-                if (newX<0 || newX>=this.size || newY<0 || newY>=this.size || (dx==0 && dy==0))
-                    continue;
-                count += this.arr[newY][newX].isMine?1:0;
-            }
-        }
-
-        return count;
-    }
-
-    public revealTile(x: number, y: number) {
-        this.arr[y][x].isRevealed = true;
-    }
-
-}
-    */
 
 export default function MinesweeperMain() {
+
+    const MIN_SIZE = 5;
+    const MAX_SIZE = 18;
 
     const [size, setSize] = useState(10);
     const [desiredSize, setDesiredSize] = useState(size);
     const [mineCount, setMineCount] = useState(11);
-    const [difficulty, setDifficulty] = useState('Easy')
+    const [difficulty, setDifficulty] = useState('Easy');
+    const [tickReset, setTickReset] = useState(false);
 
     const [state, dispatch] = useReducer(gameStateReducer, new GameState(newGameState(desiredSize, mineCount) ,'not_started', difficulty));
     const vertView = isVertView();
@@ -317,42 +290,93 @@ export default function MinesweeperMain() {
         }
     }
 
-    //RunTests();
+    function statusText(): React.ReactNode {
+        switch(state.status) {
+            case 'lost':
+                return <p className="status-text"  style={{color: "red"}}>You Lose!</p>;
+            case 'won':
+                // gets special id, because green isn't accessible in dark theme & lime isn't
+                // accessible in light theme, so color needs to change based on theme preference
+                return <p className="status-text" id="win-text">You Win!</p>;
+            case 'not_started':
+                return <p className="status-text" style={{color: "var(--color1)"}}>Click a tile to start</p>;
+            case 'ongoing':
+                return <p className="status-text" style={{color: "var(--color2)"}}>Good Luck!</p>;
+        }
+    }
+    if (RUN_TESTS) RunTests();
 
     // JSX
-
     const interfaceJSX =     
-    <div style={{width: vertView?"60%":"40%"}}>
-        
-      <span style={{paddingBlock: "0px"}}>
-        <span className="flex-center"><PiMouseLeftClick style={{fontSize:"2rem"}}/><PiShovelFill style={{fontSize:"2rem"}}/><p>Left Click to Dig</p></span>
-        <span className="flex-center"><PiMouseRightClick style={{fontSize:"2rem"}}/><FaFlag style={{fontSize:"1.7rem"}}/><p>Right Click to Flag</p></span>
+    <div style={{width: vertView?"60%":"40%", minWidth:"400px", justifyItems: "center"}}>
+      {statusText()}
+      <Stopwatch running={state.status == 'ongoing'} resetTick={tickReset} color={state.status == 'lost'?'red':state.status == 'won'?'lime':'white'}/>
+      <span className="flex-center">
+        <span className="flex-center" style={{flexDirection: "column", gap: "40px"}}>
+            <span className="flex-center">
+                <PiMouseLeftClick style={{fontSize:"2rem"}}/>
+                <PiShovelFill style={{fontSize:"1.7rem", transform: "scale(1.2)"}}/>
+            </span>
+            <span className="flex-center">
+                <PiMouseRightClick style={{fontSize:"2rem"}}/>
+                <FaFlag style={{fontSize:"1.7rem"}}/>
+            </span>
+        </span>
+        <span className="flex-center" style={{flexDirection: "column", gap: "40px"}}>
+            <p style={{margin: "0px", justifySelf: "left"}}>Left Click to Dig</p>
+            <p style={{margin: "0px", justifySelf: "left"}}>Right Click to Flag</p>
+        </span>
       </span>
 
-      <span style={{display: "flex", flexDirection: "column", padding: "20px", gap:"20px"}}>
-        <button className="gradient-button google-sans-code" onClick={() => {
-            setMineCount(sizeToMines(desiredSize, difficulty));
-            dispatch({type: 'restartGame', size: desiredSize, mineCount: mineCount, difficulty: difficulty});
-            setSize(desiredSize);
+      <span style={{display: "flex", flexDirection: "column", justifyContent: "center", padding: "20px", gap:"20px", width: "80%"}}>
+        <button className="gradient-button google-sans-code" style={{width: "70%", alignSelf:"center", marginTop:"20px"}} 
+            onClick={() => {
+                const mines = sizeToMines(desiredSize, difficulty);
+                setTickReset(!tickReset);
+                setMineCount(mines);
+                dispatch({type: 'restartGame', size: desiredSize, mineCount: mines, difficulty: difficulty});
+                setSize(desiredSize);
             }}>RESET</button>
-        <input defaultValue={size} type="range" step="1" min="5" max="18" onChange={(e) => {
-            const newSize = Number.parseInt(e.target.value);
-            const mines = sizeToMines(newSize, difficulty);
-            setDesiredSize(newSize);
-            setMineCount(mines);
-        }}/>
-        <select name="difficulty" onChange={(e) => {
-            setDifficulty(e.target.value);
-            const mines = sizeToMines(size, difficulty)
-            setMineCount(mines);
-        }}>
-            <option>Easy</option>
-            <option>Medium</option>
-            <option>Hard</option>
-        </select>
-        
+        <span className="flex-center">
+            <p style={{width:"30%", textAlign:"left"}}>Size: {desiredSize}x{desiredSize}</p>
+            <input defaultValue={size} type="range" step="1" min={MIN_SIZE} max={MAX_SIZE} 
+            style={{
+                background: `
+                linear-gradient(to right, 
+                    color-mix(in hsl, 
+                        var(--color1) ${(1-reverseLerp(desiredSize, MIN_SIZE, MAX_SIZE))*100}%,
+                        var(--color2) ${reverseLerp(desiredSize, MIN_SIZE, MAX_SIZE)*100}%) 
+                    ${reverseLerp(desiredSize, MIN_SIZE, MAX_SIZE)*96+3}%,
+                    var(--bg1) ${reverseLerp(desiredSize, MIN_SIZE, MAX_SIZE)*96+3}%)`
+            }}
+            onChange={(e) => {
+                const newSize = Number.parseInt(e.target.value);
+                const mines = sizeToMines(newSize, difficulty);
+                setDesiredSize(newSize);
+                setMineCount(mines);
+                if (state.status === 'not_started') {
+                    dispatch({type: 'restartGame', size: newSize, mineCount: mines, difficulty: difficulty});                     
+                    setSize(newSize);
+                }
+            }}/>
+        </span>
+        <span className="flex-center">
+            <p style={{width:"30%", textAlign:"left"}}>Mines: {mineCount}</p>
+            <select style={{width:"70%"}} name="difficulty" className="dropdown cascadia-code" onChange={(e) => {
+                setDifficulty(e.target.value);
+                const mines = sizeToMines(size, e.target.value)
+                setMineCount(mines);
+                if (state.status == 'not_started') {
+                    dispatch({type: 'restartGame', size: size, mineCount: mines, difficulty: e.target.value});
+                }
+            }}>
+                <option className="cascadia-code">Easy</option>
+                <option className="cascadia-code">Medium</option>
+                <option className="cascadia-code">Hard</option>
+                <option className="cascadia-code">Impossible</option>
+            </select>
+        </span>
       </span>
-        {state.status}
     </div>;
 
     return (<div style={{
@@ -361,7 +385,6 @@ export default function MinesweeperMain() {
         justifyContent: "center",
         alignItems: "center"
         }}>
-
         {vertView? <></> : interfaceJSX}
         <div className="minefield-container" onContextMenu={(e) => e.preventDefault()}
         style={{
@@ -383,10 +406,11 @@ export default function MinesweeperMain() {
     </div>)
 }
 
+var RUN_TESTS = false;
 
 function RunTests() {
 
-    const state1 = new GameState(newGameState(3, 0));
+    const state1 = new GameState(newGameState(3, 0), 'not_started', 'Easy');
     state1.setMines([[true, true, true],
                      [false, true, false], 
                      [true, false, true]]);
@@ -396,12 +420,12 @@ function RunTests() {
     assertTrue(state1.tiles[2][1].adjacentMines == 3, "tile x=1, y=2 has 3 adjacent mines");
 
     for (let i=0; i<10; i++) {
-        const state2 = new GameState(newGameState(3, 8, {x:2, y:2}));
+        const state2 = new GameState(newGameState(3, 8, {x:2, y:2}), 'not_started', 'Easy');
         assertTrue(state2.tiles[2][2].isMine == false,
                 "tile marked as safe in otherwise filled minefield is safe");
     }
 
-    const state2 = new GameState(newGameState(3, 0));
+    const state2 = new GameState(newGameState(3, 0), 'not_started', 'Easy');
     state2.setMines([[true, false, true],
                      [false, true, false], 
                      [true, false, true]]);
@@ -412,6 +436,10 @@ function RunTests() {
     assertTrue(state2.status == 'won', "game with all safe tiles cleared is won");
     state2.revealTile(0, 0);
     assertTrue(state2.status == 'lost', "game with mine revealed is a loss");
+
+    assertTrue(reverseLerp(10, 10, 20) == 0, "lowest part of lerp is 0");
+    assertTrue(reverseLerp(-10, 10, 20) == 0 && reverseLerp(25, 10, 20) == 1, "results are clamped between 0 and 1");
+    assertTrue(reverseLerp(15, 10, 20) == 0.5, "middle of two values returns 0.5");
 
     console.log("ALL TESTS PASSED!");
 

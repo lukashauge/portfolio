@@ -79,10 +79,10 @@ p {
     --bg1: #ffffff;
     --bg2: #c0cedd;
 
-    --color1: #4a65db;
-    --color2: #ffa34d;
+    --color1: #4e68df;
+    --color2: #ff9f46;
 
-    --contrastColor: #1a3852;
+    --contrastColor: #1b2630;
   }
 }
 @media (prefers-color-scheme: dark) {
@@ -91,7 +91,7 @@ p {
     --bg2: #25232e;
 
     --color1: #ffde24;
-    --color2: #9872ff;
+    --color2: #ae91ff;
 
     --contrastColor: white;
   }

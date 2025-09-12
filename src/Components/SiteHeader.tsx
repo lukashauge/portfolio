@@ -22,7 +22,7 @@ export default function SiteHeader(props: {imgInfo: {image: string, alt: string}
         <div style={{display: "flex", flexDirection: "column", justifyContent: "center", maxWidth: "600px", minWidth: "470px"}}>
           
 
-          <h1 className="cascadia-code" style={{background: "black", color:"white", borderRadius: "20px", textAlign: "left", padding: "40px", lineHeight: "4rem", maxWidth: "80vw", minWidth: "355px"}}>
+          <h1 className="cascadia-code" style={{background: "black", color:"white", borderRadius: "20px", textAlign: vertView?"center":"left", padding: "40px", lineHeight: "4rem", maxWidth: "80vw", minWidth: "355px"}}>
             This is Lukas Hauge
           </h1>
 
