@@ -1,5 +1,5 @@
 import FullWidthImg from './FullWidthImg.tsx'
-import { isVertView } from '../scripts/useWindowWidth.tsx';
+import { isVertView } from '../scripts/useWindowDimensions.tsx';
 import useInView from '../scripts/useInView.tsx';
 
 import resume from '../assets/Lukas_Hauge_Resume.pdf'

@@ -1,7 +1,10 @@
-import React, { useReducer, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
+import confetti from "canvas-confetti";
+
 import Tile from './Tile';
 import Stopwatch from './Stopwatch';
-import { isVertView } from '../../scripts/useWindowWidth';
+import { isVertView } from '../../scripts/useWindowDimensions';
+import useWindowDimensions from '../../scripts/useWindowDimensions';
 
 import './Minesweeper.css';
 
@@ -14,6 +17,12 @@ function reverseLerp(value: number, lower: number, upper: number): number {
     if (value >= upper) return 1;
     // reverse lerp
     return (value - lower) / (upper - lower);
+}
+
+function randomRange(lower: number, upper: number, floored: boolean = false): number {
+    let res = Math.random()*(upper-lower) + lower;
+    if (floored) res = Math.floor(res);
+    return res;
 }
 
 function newTile(): 
@@ -56,6 +65,18 @@ function newGameState(size: number, mineCount: number, markSafeStartTile?: {x:nu
                 }
         }
 
+        // bombs in corners are a big source of 50/50 luck-based decisions
+        // but, only make them guaranteed safe 80% of the time so people don't just
+        // always go for the corners!
+
+        if (Math.random() >= 0.8) {
+            if (!safeZone.has(0)) safeZone.add(0); // top left
+            if (!safeZone.has(size-1)) safeZone.add(size-1); // top right
+            if (!safeZone.has((size-1)*size)) safeZone.add((size-1)*size); // bottom left
+            if (!safeZone.has(size*size-1)) safeZone.add(size*size-1);
+        }
+
+
         const indexes = [...Array(numMines).keys()].filter((i) => !safeZone.has(i));
         for (let i=0; i<mineCount; i++) {
 
@@ -79,24 +100,6 @@ function newGameState(size: number, mineCount: number, markSafeStartTile?: {x:nu
                 }
 
         }
-
-        // record number of adjacent mines in each tile
-        function getAdjacentMines(x: number, y: number): number {
-            let count = 0;
-            for(let dx=-1; dx<=1; dx++) {
-                for(let dy=-1; dy<=1; dy++) {
-                    const newX = x+dx;
-                    const newY = y+dy;
-                    if (newX<0 || newX>=size || newY<0 || newY>=size || (dx==0 && dy==0))
-                        continue;
-                    count += tiles[newY][newX].isMine?1:0;
-                }
-            }
-            return count;
-        }
-        tiles.forEach((vector, y) => {
-                vector.forEach((tile, x) => tile.adjacentMines = getAdjacentMines(x, y))
-            });
     }
     
     return tiles;
@@ -220,19 +223,22 @@ export class GameState {
 
 }
 
-function gameStateReducer(state: GameState, action: any) {
-
-    const actionType: string = action.type;
+function gameStateReducer(state: GameState, 
+    action: {type: 'dig', x: number, y: number} |
+            {type: 'setFlag', x: number, y: number} |
+            {type: 'removeFlag', x: number, y: number} |
+            {type: 'restartGame', size: number, mineCount: number, difficulty: string}
+) {
 
     let newState: GameState;
-    if (state.status == 'not_started') {
+    if (action.type !== 'restartGame' && state.status == 'not_started') {
         let mineCount = sizeToMines(state.size, state.difficulty);
         newState = new GameState(newGameState(state.size, mineCount, {x: action.x, y: action.y}), 'not_started', state.difficulty);
     } else {
         newState = state.clone();
     }
 
-    switch (actionType) {
+    switch (action.type) {
 
         case 'dig':
             if (!newState.tiles[action.y][action.x].isFlagged) {
@@ -264,7 +270,7 @@ function gameStateReducer(state: GameState, action: any) {
 export default function MinesweeperMain() {
 
     const MIN_SIZE = 5;
-    const MAX_SIZE = 18;
+    const MAX_SIZE = 25;
 
     const [size, setSize] = useState(10);
     const [desiredSize, setDesiredSize] = useState(size);
@@ -274,7 +280,37 @@ export default function MinesweeperMain() {
 
     const [state, dispatch] = useReducer(gameStateReducer, new GameState(newGameState(desiredSize, mineCount) ,'not_started', difficulty));
     const vertView = isVertView();
+    
+    // calculate tile font size mulitplier
+    const dim = useWindowDimensions();
+    const fontMultiplier = 250/size * Math.min(dim.w, dim.h)/1000;
 
+    useEffect(() => {
+        if (RUN_TESTS) RunTests();
+    }, []); 
+
+    useEffect(() => {
+        if (state.status == 'won') {
+            confetti({
+                particleCount: 100,
+                angle: randomRange(30, 60),
+                spread: 100,
+                origin: {x: 0, y: 0.5},
+                decay: 0.93,
+                ticks: 150,
+                scalar: 1.5
+            });
+            confetti({
+                particleCount: 100,
+                angle: randomRange(120, 150),
+                spread: 100,
+                origin: {x: 1, y: 0.5},
+                decay: 0.93,
+                ticks: 150,
+                scalar: 1.5
+            });
+        }
+    }, [state.status == 'won']);
       
     function handleTileClick(x: number, y: number, type: string): void {
         if (state.tiles[y][x].isRevealed || state.status == 'lost' ||state.status == 'won') return;
@@ -304,11 +340,19 @@ export default function MinesweeperMain() {
                 return <p className="status-text" style={{color: "var(--color2)"}}>Good Luck!</p>;
         }
     }
-    if (RUN_TESTS) RunTests();
+
 
     // JSX
     const interfaceJSX =     
-    <div style={{width: vertView?"60%":"40%", minWidth:"400px", justifyItems: "center"}}>
+    <div style={{width: vertView?"70%":"30%", minWidth:"400px", justifyItems: "center"}}>
+    <button className="gradient-button google-sans-code" style={{width: "70%", alignSelf:"center", marginTop:"20px"}} 
+        onClick={() => {
+            const mines = sizeToMines(desiredSize, difficulty);
+            setTickReset(!tickReset);
+            setMineCount(mines);
+            dispatch({type: 'restartGame', size: desiredSize, mineCount: mines, difficulty: difficulty});
+            setSize(desiredSize);
+        }}>RESET</button>
       {statusText()}
       <Stopwatch running={state.status == 'ongoing'} resetTick={tickReset} color={state.status == 'lost'?'red':state.status == 'won'?'lime':'white'}/>
       <span className="flex-center">
@@ -329,16 +373,8 @@ export default function MinesweeperMain() {
       </span>
 
       <span style={{display: "flex", flexDirection: "column", justifyContent: "center", padding: "20px", gap:"20px", width: "80%"}}>
-        <button className="gradient-button google-sans-code" style={{width: "70%", alignSelf:"center", marginTop:"20px"}} 
-            onClick={() => {
-                const mines = sizeToMines(desiredSize, difficulty);
-                setTickReset(!tickReset);
-                setMineCount(mines);
-                dispatch({type: 'restartGame', size: desiredSize, mineCount: mines, difficulty: difficulty});
-                setSize(desiredSize);
-            }}>RESET</button>
         <span className="flex-center">
-            <p style={{width:"30%", textAlign:"left"}}>Size: {desiredSize}x{desiredSize}</p>
+            <p style={{width:"30%", textAlign:"left"}}>Size:<br/>{desiredSize}x{desiredSize}</p>
             <input defaultValue={size} type="range" step="1" min={MIN_SIZE} max={MAX_SIZE} 
             style={{
                 background: `
@@ -361,7 +397,7 @@ export default function MinesweeperMain() {
             }}/>
         </span>
         <span className="flex-center">
-            <p style={{width:"30%", textAlign:"left"}}>Mines: {mineCount}</p>
+            <p style={{width:"30%", textAlign:"left"}}>Mines:<br/>{mineCount}</p>
             <select style={{width:"70%"}} name="difficulty" className="dropdown cascadia-code" onChange={(e) => {
                 setDifficulty(e.target.value);
                 const mines = sizeToMines(size, e.target.value)
@@ -381,32 +417,33 @@ export default function MinesweeperMain() {
 
     return (<div style={{
         display:"flex", 
-        flexDirection: vertView?"column":"row",
+        flexDirection: vertView?"column-reverse":"row",
         justifyContent: "center",
         alignItems: "center"
         }}>
-        {vertView? <></> : interfaceJSX}
+
+        {interfaceJSX}
         <div className="minefield-container" onContextMenu={(e) => e.preventDefault()}
         style={{
             border: `5px solid ${state.status == 'won'? 'lime' : state.status == 'lost'? 'red' : 'var(--contrastColor)'}`,
             gridTemplateRows: `repeat(${size}, 1fr)`,
             gridTemplateColumns: `repeat(${size}, 1fr)`,
-            gap: "1%"
+            gap: `${fontMultiplier/5}px`
         }}>
             {[...Array(size**2)].map((_, i: number) => {
                 return <Tile 
                 key={i}
+                tileFontSize={fontMultiplier}
                 state={state} 
                 coord={{x:i%size, y:Math.floor(i/size)}} 
                 handleClick={handleTileClick}/>
             })}
         </div>
-        {vertView? interfaceJSX : <></>}
 
     </div>)
 }
 
-var RUN_TESTS = false;
+var RUN_TESTS = true;
 
 function RunTests() {
 

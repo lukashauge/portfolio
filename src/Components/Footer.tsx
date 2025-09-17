@@ -14,6 +14,7 @@ export default function Footer() {
     }}>
             
         <p style={{color: "white", fontSize: "1.4rem"}}>Thanks for visiting!</p>
+        <p style={{color: "white", fontSize: "1.4rem"}}>-Lukas</p>
         
     </div>
   )

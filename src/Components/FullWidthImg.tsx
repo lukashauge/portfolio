@@ -1,4 +1,4 @@
-import { isVertView } from '../scripts/useWindowWidth';
+import { isVertView } from '../scripts/useWindowDimensions';
 import useParallaxRef from '../scripts/useParallaxRef';
 
 export default function FullWidthImg(props: {

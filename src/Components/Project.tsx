@@ -1,6 +1,6 @@
 import React from 'react'
 import useInView from '../scripts/useInView';
-import useWindowWidth from '../scripts/useWindowWidth';
+import useWindowWidth from '../scripts/useWindowDimensions';
 
 export default function Project(props: {
   children: React.ReactNode,
@@ -12,7 +12,7 @@ export default function Project(props: {
   const {children, title, flipText = false, imgInfo} = props;
 
   // used to reformat the layout when the window width changes
-  const windowWidth = useWindowWidth();
+  const windowWidth = useWindowWidth().w;
   const reformatThreshold = 950;
   const vertView: boolean = windowWidth<reformatThreshold;
 

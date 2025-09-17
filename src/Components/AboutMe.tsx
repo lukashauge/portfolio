@@ -5,35 +5,41 @@ import { FaPaintBrush } from 'react-icons/fa';
 import defaultImage from '../assets/default-image.png'
 
 import useInView from '../scripts/useInView';
-import useWindowWidth from '../scripts/useWindowWidth';
+import useWindowWidth from '../scripts/useWindowDimensions';
 
 export default function AboutMe(props: {children?: React.ReactNode}) {
 
-    const windowWidth = useWindowWidth();
+    const windowWidth = useWindowWidth().w;
     const threshold = 1150;
     const vertView: boolean = windowWidth<threshold;
     const attributesInView = useInView();
     const whoAmIInView = useInView();
 
     const {children} = props;
-    const iconStyle = {fontSize: "4em", marginInline: "20px", transform: "translateY(-0.4rem)", minWidth: "30px", maxWidth: "40px"};
+    const iconStyle = {fontSize: "4em", marginInline: "15px", transform: "translateY(-0.4rem)", minWidth: "30px", maxWidth: "40px"};
     const personalAttributes = [
         {
             icon: <FaPaintBrush style={iconStyle}/>,
             title: "Designer",
-            description: "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin",
+            description: `I don't just build things, I think about how people will use them. My projects balance ease of 
+            use with appealing visuals, strengthened through user feedback and design iteration. My additional background in digital art, sound engineering, 
+            and UI/UX are why I bring that extra flavor to each project: whether a game, app, or website like this!`,
             backgroundImage: defaultImage
         },
         {
             icon: <FaCode style={iconStyle}/>,
             title: "Programmer",
-            description: "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin",
+            description: `Java, Python, C#, C++, TypeScript, with more to come! My focus isn’t just on learning tools or syntax, 
+            but on using them to build real projects that live outside the classroom. What makes those projects successful 
+            is how I structure them: writing clean, scalable code that holds up as complexity grows.`,
             backgroundImage: defaultImage
         },
         {
             icon: <FaStar style={iconStyle}/>,
             title: "Team Player",
-            description: "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin",
+            description: `I'm comfortable leading and following, depending on what the team needs. I’ve managed a 35-person team to build a 
+            game I couldn’t have created alone. I take initiative when decisions need to be made, but I also advocate for my team 
+            to ensure what we build reflects everyone’s vision.`,
             backgroundImage: defaultImage
         }
     ]
@@ -58,7 +64,7 @@ export default function AboutMe(props: {children?: React.ReactNode}) {
 
                     {personalAttributes.map((entry: {icon: React.ReactNode | null, title: string, description: string, backgroundImage: string}, index: number) => {
                         return (
-                            <span key={index} className="personal-attribute" style={{ maxWidth: vertView?"60%":"350px", gap: "0%", minHeight: "150px", backgroundImage: `url(${entry.backgroundImage}`}}>
+                            <span key={index} className="personal-attribute" style={{ maxWidth: vertView?"80%":"30%", gap: "0%", minHeight: "150px", alignSelf: vertView?"center":"", backgroundImage: `url(${entry.backgroundImage}`}}>
                                 {entry.icon? entry.icon : <></>}
                                 <div style={{justifyItems: "left"}}>
                                     <h2 style={{textAlign: "left"}}>{entry.title}</h2>

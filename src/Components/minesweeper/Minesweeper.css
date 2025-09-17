@@ -16,7 +16,7 @@
     padding: 20px;
     aspect-ratio: 1/1;
 
-    border-radius: 40px;
+    border-radius: 30px;
 
     transition: border 1s var(--easeOutQuint);
 
@@ -36,7 +36,6 @@
 
 .minefield-number {
     margin: 0px;
-    font-size: 1rem;
 }
 
 .tile-revealed {
@@ -77,7 +76,8 @@
 
 .status-text {
     transition: all 1s var(--easeOutQuint);
-    font-size: 1.7rem;
+    font-family: "Merriweather";
+    font-size: 2rem;
 }
 
 .dropdown {

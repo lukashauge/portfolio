@@ -16,6 +16,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  /* no side scrolling */
+  overflow-x: hidden;
+
   /* variables */
 
   --easeOutQuint: cubic-bezier(0.22, 1, 0.36, 1);

@@ -53,14 +53,14 @@ function Home() {
     <>
       <SiteHeader imgInfo={defaultInfoImg}/>
       <AboutMe>
-        <h2 style={{textAlign: "left"}}>Children Test</h2>
+        <h2 style={{textAlign: "left"}}>More About Me</h2>
         <p style={{textAlign:"justify"}}>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical
               Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at
               Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a
               Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the
               undoubtable source.</p>
       </AboutMe>
-      <h1 ref={projectRef}>Here are some<br/> projects I've created!</h1>
+      <h1 ref={projectRef}>Here are some<br/>projects I've created!</h1>
       <ProjectList>
         <Project title="The Brilliant Detective Milo" imgInfo={defaultInfoImg} flipText={false}>
             <h2 className="merriweather" style={{textAlign: "left", lineHeight: "2rem"}}>Executive Creative & Technical Director</h2>
@@ -105,7 +105,7 @@ function Home() {
               1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original
               form, accompanied by English versions from the 1914 translation by H. Rackham.
             </p>
-            <span style={{display: "flex", gap: "20px"}}>
+            <span className="adaptive-flex" style={{display: "flex", gap: "20px"}}>
               <button className="fancy-button google-sans-code" style={{ 
                 display: "flex",
                 justifyContent: "center",
@@ -135,8 +135,11 @@ function Home() {
       </ProjectList>
 
       <h1 ref={gameRef} style={{marginBlock: "20px", marginInline:"0px", paddingBottom:"0px", maxWidth: "50%", justifySelf: "center", paddingBlock:"10px"}}>You've made it to the end!</h1>
-      <p style={{fontSize:"1.4rem", maxWidth: "50%", justifySelf: "center", textAlign: "justify"}}>
+      <p style={{fontSize:"1.4rem", maxWidth: "800px", width:"80%", justifySelf: "center", textAlign: "justify", paddingBottom:"min(10px, 3vw)"}}>
         Feel free to play this <strong style={{color: "var(--color1)"}}>minesweeper</strong> I made. I'll be working on my next project in the meantime, I promise it'll be worth the wait! :)
+      </p>
+      <p style={{marginBottom: "40px"}}>
+        <a href="https://minesweepergame.com/strategy/how-to-play-minesweeper.php" target="_blank" style={{textDecoration:'underline', fontSize:"1.5rem"}}>How to Play</a>
       </p>
       <MinesweeperMain/>
       <Footer/>
