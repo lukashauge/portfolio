@@ -54,11 +54,12 @@ function Home() {
       <SiteHeader imgInfo={defaultInfoImg}/>
       <AboutMe>
         <h2 style={{textAlign: "left"}}>More About Me</h2>
-        <p style={{textAlign:"justify"}}>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical
-              Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at
-              Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a
-              Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the
-              undoubtable source.</p>
+        <p style={{textAlign:"justify"}}>I'm a third year student at UCI. I speak English, Danish, and Japanese.
+          I'm active in my university's video game development club as a UX/UI officer! I produce music, animate,
+          and draw TONS of art! I combine my creativity with my affinity for programming to bring games to life. 
+          Since developing Spigot plugins using Java in high school, I've known software/games engineering would be
+          the perfect playground for me to express myself and sharpen my problem-solving brain.
+        </p>
       </AboutMe>
       <h1 ref={projectRef}>Here are some<br/>projects I've created!</h1>
       <ProjectList>
@@ -134,10 +135,13 @@ function Home() {
         </Project>
       </ProjectList>
 
-      <h1 ref={gameRef} style={{marginBlock: "20px", marginInline:"0px", paddingBottom:"0px", maxWidth: "50%", justifySelf: "center", paddingBlock:"10px"}}>You've made it to the end!</h1>
-      <p style={{fontSize:"1.4rem", maxWidth: "800px", width:"80%", justifySelf: "center", textAlign: "justify", paddingBottom:"min(10px, 3vw)"}}>
-        Feel free to play this <strong style={{color: "var(--color1)"}}>minesweeper</strong> I made. I'll be working on my next project in the meantime, I promise it'll be worth the wait! :)
-      </p>
+      <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+        <h1 ref={gameRef} style={{marginBlock: "20px", marginInline:"0px", paddingBottom:"0px", paddingBlock:"10px"}}>You've made it to the end!</h1>
+        <p style={{fontSize:"1.4rem", width: "min(800px, 80%)", textAlign: "justify", justifySelf: "center", paddingBottom:"min(10px, 3vw)"}}>
+          Feel free to play this <strong style={{color: "var(--color1)"}}>minesweeper</strong> I made. I'll be working on my next project in the meantime, I promise it'll be worth the wait! :)
+        </p>
+      </div>
+
       <p style={{marginBottom: "40px"}}>
         <a href="https://minesweepergame.com/strategy/how-to-play-minesweeper.php" target="_blank" style={{textDecoration:'underline', fontSize:"1.5rem"}}>How to Play</a>
       </p>

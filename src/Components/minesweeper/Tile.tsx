@@ -1,7 +1,8 @@
 import { FaBomb, FaFlag } from "react-icons/fa6";
 import { GameState } from "./MinesweeperMain";
+import { memo } from "react";
 
-export default function Tile(props: 
+function Tile(props: 
   {coord:{x: number, y:number},
   state: GameState,
   tileFontSize: number,
@@ -36,3 +37,5 @@ export default function Tile(props:
   )
 
 }
+
+export default memo(Tile);
