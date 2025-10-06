@@ -12,7 +12,7 @@ export default function Navbar(props: {children?: React.ReactNode}) {
   return (
     <div className="navbar" style={{justifyContent: vertView?"center":"space-between", paddingBlock: vertView?"30px":"20px"}}>
       {vertView&&!hideButtons?<></>:<strong style={{paddingInline:"30px"}}>LUKAS HAUGE'S PORTFOLIO</strong>}
-      <span style={{paddingInline: "30px"}}>
+      <span style={{paddingInline: hideButtons?"0px":"30px"}}>
         {!hideButtons?children:<></>}
       </span>
     </div>

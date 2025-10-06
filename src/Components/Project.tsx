@@ -6,10 +6,11 @@ export default function Project(props: {
   children: React.ReactNode,
   title: string,
   flipText?: boolean,
+  aspectRatio?: number,
   imgInfo: {image: string, alt: string}
 }) {
 
-  const {children, title, flipText = false, imgInfo} = props;
+  const {children, title, flipText = false, aspectRatio = 1, imgInfo} = props;
 
   // used to reformat the layout when the window width changes
   const windowWidth = useWindowWidth().w;
@@ -23,7 +24,7 @@ export default function Project(props: {
   // sections
   const titleSection = (
       <div className="project-title">
-        <img src={imgInfo.image} alt={imgInfo.alt} style={{objectFit: "cover", aspectRatio: 1/1}}/>
+        <img src={imgInfo.image} alt={imgInfo.alt} style={{objectFit: "cover", width: `min(100%, ${100*aspectRatio}%)`, aspectRatio: aspectRatio}}/>
       </div>
       );
   const descriptionSection = (<div className="project-description">

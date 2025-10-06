@@ -13,7 +13,7 @@ export default function SiteHeader(props: {imgInfo: {image: string, alt: string}
 
     return ( 
     <>
-    <FullWidthImg imgInfo={imgInfo} parallaxParams={{anchor: 0, speed: 0.5}}>
+    <FullWidthImg imgInfo={imgInfo} parallaxParams={{anchor: -1*window.innerWidth/5, speed: 0.5}}>
       <div ref={titleInView.inViewRef} style={{
         display: "flex", flexDirection: vertView?"column":"row", alignItems: "center", justifyContent: "space-evenly",
         opacity: titleInView.inView?1:0,

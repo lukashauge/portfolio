@@ -35,18 +35,19 @@ body {
 
 h1 {
   font-family: "Merriweather";
-  line-height: 4rem;
-  font-size: 4rem;
+  line-height: min(4rem, 8vw);
+  font-size: min(4rem, 8vw);
   margin-inline: 30px;
   padding: 20px;
 }
 
 h2 {
-  font-size: 2rem;
+  font-size: min(2rem, 4vw);
   margin: 0;
 }
 
 p {
+  font-size: min(1rem, 2.5vw);
   font-family: "Cascadia Code", sans-serif;
 }
 

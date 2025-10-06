@@ -1,8 +1,8 @@
 import { useRef, useEffect } from "react";
 
-export default function useParallaxRef(parallaxParams: {anchor: number, speed: number}): React.RefObject<HTMLImageElement | null> {
+export default function useParallaxRef(parallaxParams: {anchor: number, speed: number}): React.RefObject<any> {
   
-    const imgRef = useRef<HTMLImageElement>(null);
+    const imgRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
     let animationFrame: number;

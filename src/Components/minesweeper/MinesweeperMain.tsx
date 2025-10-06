@@ -443,7 +443,7 @@ export default function MinesweeperMain() {
     </div>)
 }
 
-var RUN_TESTS = true;
+var RUN_TESTS = false;
 
 function RunTests() {
 

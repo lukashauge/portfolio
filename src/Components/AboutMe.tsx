@@ -2,7 +2,12 @@ import React from 'react'
 import { FaCode, FaStar } from 'react-icons/fa6';
 import { FaPaintBrush } from 'react-icons/fa';
 
-import defaultImage from '../assets/default-image.png'
+import Star from '../Components/Star'
+
+import selfPortrait from '../assets/me.jpg'
+import teamPicture from '../assets/team.jpg'
+import codePicture from '../assets/code.png'
+import tablePicture from '../assets/table.jpg'
 
 import useInView from '../scripts/useInView';
 import useWindowWidth from '../scripts/useWindowDimensions';
@@ -24,7 +29,7 @@ export default function AboutMe(props: {children?: React.ReactNode}) {
             description: `I don't just build things, I think about how people will use them. My projects balance ease of 
             use with appealing visuals, strengthened through user feedback and design iteration. My additional background in digital art, sound engineering, 
             and UI/UX are why I bring that extra flavor to each project: whether a game, app, or website like this!`,
-            backgroundImage: defaultImage
+            backgroundImage: tablePicture
         },
         {
             icon: <FaCode style={iconStyle}/>,
@@ -32,7 +37,7 @@ export default function AboutMe(props: {children?: React.ReactNode}) {
             description: `Java, Python, C#, C++, TypeScript, with more to come! My focus isn’t just on learning tools or syntax, 
             but on using them to build real projects that live outside the classroom. What makes those projects successful 
             is how I structure them: writing clean, scalable code that holds up as complexity grows.`,
-            backgroundImage: defaultImage
+            backgroundImage: codePicture
         },
         {
             icon: <FaStar style={iconStyle}/>,
@@ -40,7 +45,7 @@ export default function AboutMe(props: {children?: React.ReactNode}) {
             description: `I'm comfortable leading and following, depending on what the team needs. I’ve managed a 35-person team to build a 
             game I couldn’t have created alone. I take initiative when decisions need to be made, but I also advocate for my team 
             to ensure what we build reflects everyone’s vision.`,
-            backgroundImage: defaultImage
+            backgroundImage: teamPicture
         }
     ]
 
@@ -78,6 +83,21 @@ export default function AboutMe(props: {children?: React.ReactNode}) {
 
                 {/*summary*/}
                 <div style={{display: "flex", flexDirection: vertView?"column":"row", alignItems: "center", justifyContent: "center", padding: "20px", gap: "5%", marginTop: "30px"}}>
+                    
+                    <div style={{height: "0px", position: "absolute", width: "100%"}}>
+                        <Star rightOffset="47%" bottomOffset={150 + (vertView?100:0)} z={0.6} />
+                        <Star rightOffset="40%" bottomOffset={-150 + (vertView?-100:0)} z={1.1} />
+                        <Star rightOffset="35%" bottomOffset={250 + (vertView?100:0)} z={0.3} />
+                        <Star rightOffset="34%" bottomOffset={400 + (vertView?200:0)} z={0.5} />
+                        <Star rightOffset="27%" bottomOffset={150 + (vertView?500:0)} z={0.4} />
+
+                        <Star rightOffset="-45%" bottomOffset={100 + (vertView?100:0)} z={0.7} />
+                        <Star rightOffset="-40%" bottomOffset={500 + (vertView?100:0)} z={0.4} />
+                        <Star rightOffset="-39%" bottomOffset={200 + (vertView?100:0)} z={1.3} />
+                        <Star rightOffset="-40%" bottomOffset={300 + (vertView?100:0)} z={0.4} />
+                        <Star rightOffset="-32%" bottomOffset={600 + (vertView?100:0)} z={0.3} />
+                    </div>
+
                     {vertView?<></>:<div style={{maxWidth: vertView?"70%":"30%"}}>{children}</div>}
                     <div style={{ // outline
                         background:"linear-gradient(to bottom right, var(--color1), var(--color2))",
@@ -89,7 +109,7 @@ export default function AboutMe(props: {children?: React.ReactNode}) {
                         width: "40%",
                         height: "40%", 
                         margin: "20px"
-                    }}><img src={defaultImage} style={{ // image inside the outline
+                    }}><img src={selfPortrait} alt="A picture of Lukas in a suit" style={{ // image inside the outline
                         borderRadius: "50%", 
                         width: "100%",
                         height: "100%",
