@@ -13,6 +13,9 @@ export default function Star(props: {rightOffset: string, bottomOffset: number, 
   return (
     <div className="star" ref={ref} style={{
 
+        position: "relative",
+        zIndex: Math.round(z),
+
         bottom: bottomOffset,
         right: rightOffset,  
         opacity: z**2 + 0.1

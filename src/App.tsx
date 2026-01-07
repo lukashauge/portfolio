@@ -70,7 +70,7 @@ function Home() {
         </p>
       </AboutMe>
       
-      <h1 ref={projectRef} style={{fontSize: "min(5rem, 7.5vw)", lineHeight: "min(4rem, 8vw)"}}>Here are some<br/>projects I've created!</h1>
+      <h1 ref={projectRef} style={{fontSize: "min(5rem, 7.5vw)", lineHeight: "min(5rem, 10vw)"}}>Here are some<br/>projects I've created!</h1>
       <ProjectList>
         <Project title="The Brilliant Detective Milo" imgInfo={miloInfoImg} flipText={false} aspectRatio={0.7}>
             <h2 className="merriweather" style={{textAlign: "left", lineHeight: "2rem"}}>Executive Creative & Technical Director</h2>
@@ -155,12 +155,12 @@ function Home() {
               Wow, very meta... Talking about my portfolio site, on my portfolio site!
             </p>
             <p>
-              This site was made as a definitive place to document all of my projects. It's made with React and TypeScript, featuring
-              dynamic routing, interactive components, custom hooks, and a customized responsive layout. You may even find with the use of state management & event handling,
-              there's a little game at the bottom you can play too! :)
+              This site was made as a definitive place to document all of my projects. It's made with React and TypeScript, NO VIBE CODING!! It features
+              dynamic routing, interactive components, custom hooks, and a customized responsive layout. Wow! You may even find with the use of state management & event handling,
+              there's a little game at the bottom you can play too! (you should do it!) :)
             </p>
             <p>
-              As I create more, this site will be updated with additional sections & features.
+              As I create more, this site will be updated with additional sections & features. It's very plain right now as you could maybe tell.
             </p>
         </Project>
       </ProjectList>

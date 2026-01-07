@@ -18,6 +18,7 @@
 
   /* no side scrolling */
   overflow-x: hidden;
+  overflow-y: scroll;
 
   /* variables */
 
