@@ -62,9 +62,9 @@ function Home() {
 
       <AboutMe>
         <h2 style={{textAlign: "left"}}>More About Me</h2>
-        <p style={{textAlign:"justify"}}>I'm a third year student at UCI. I speak English, Danish, and Japanese.
-          I'm active in my university's video game development club as a UX/UI officer! I produce music, animate,
-          and draw TONS of art! I combine my creativity with my affinity for programming to bring games to life. 
+        <p style={{textAlign:"justify"}}>I'm graduating from UC Irvine in December. I speak English, Danish, and Japanese.
+          I'm active in my university's video game development club as an art officer! I produce music, animate,
+          and draw TONS! I combine my creativity with my affinity for programming to bring games to life. 
           Since developing Spigot plugins using Java in high school, I've known software/games engineering would be
           the perfect playground for me to express myself and sharpen my problem-solving brain.
         </p>
@@ -80,13 +80,13 @@ function Home() {
               in the shadows of the city… 
             </p>
             <p>
-              This is a project I wore many hats for! Originally pitched to VGDC @ UCI, this game is the product of 35 creative people working together for a year and a half.
+              This is a project I wore many hats for! Originally pitched to VGDC @ UCI, this game is the product of 40 creative people working together for a year and a half.
               As the team lead, I handled department meetings and project management. If a team member got sick, I found ways to account for their deliverables.
               I created a large chunk of the artwork (including the Steam library capsule you see), composed music, animated characters, and designed & implemented the C# system architecture all while keeping the
               six departments motivated.
             </p>
             <p>
-              After producing an animated trailer, The Brilliant Detective Milo is now available for wishlist on Steam! It will be ready to play once I draw
+              After producing an animated trailer, The Brilliant Detective Milo now has a demo ready to play! It'll be fully released once I draw
               the rest of the game's comic cutscenes and add some final polish. Get a feel for the game by clicking the button below!
             </p>
             <button className="fancy-button google-sans-code" style={{ 
